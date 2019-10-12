@@ -165,9 +165,9 @@ uint16_t XY( uint8_t x, uint8_t y)
 CRGB leds_plus_safety_pixel[ NUM_LEDS + 1];
 CRGB* const leds( leds_plus_safety_pixel + 1);
 
-uint32_t seconds = 0;
-uint32_t hours = 1;
-uint32_t minutes = 59;
+float seconds = 25;
+uint32_t hours = 11;
+uint32_t minutes = 12;
 
 
 uint16_t XYsafe( uint8_t x, uint8_t y)
@@ -195,7 +195,7 @@ void loop()
     FastLED.show();
     */
 
-    seconds += 1;
+    seconds += .5;
 
     if (seconds >= 60) {
       setBackground(CRGB(0, 0, 0));
@@ -229,7 +229,7 @@ void loop()
     showNum(minute, RIGHTSTARTX);
 
     
-    if (seconds % 2 == 0) {
+    if (seconds - (float)round(seconds) == 0) {
       dotsOff();
     } else {
       dots();
@@ -237,7 +237,7 @@ void loop()
 
     FastLED.show();
     
-    delay(1000);
+    delay(500);
 }
 
 void setBackground(CRGB color) {
