@@ -15,7 +15,9 @@
 
 #define DOTSCOLOR CRGB(255, 255, 255)
 #define NUMBERCOLOR CRGB(0, 255, 255)
+#define LETTERCOLOR CRGB(255, 0, 0)
 #define BARSIZE 5
+
 
 
 
@@ -170,6 +172,67 @@ uint32_t hours = 11;
 uint32_t minutes = 12;
 
 
+bool aMatrix[10][5] = 
+{{true, true, true, true, true},
+{true, false, false, false, true},
+{true, false, false, false, true},
+{true, false, false, false, true},
+{true, false, false, false, true},
+{true, true, true, true, true},
+{true, false, false, false, true},
+{true, false, false, false, true},
+{true, false, false, false, true},
+{true, false, false, false, true}};
+/*int aMatrix[10][5] = 
+{{1, 1, 1, 1, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 1, 1, 1, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1}};
+
+/*int bMatrix[10][5] = 
+{{1, 1, 1, 1, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 1, 1, 1, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 1, 1, 1, 1}};
+
+ int cMatrix[10][5] = 
+{{0, 1, 1, 1, 0},
+{1, 1, 1, 1, 1},
+{1, 1, 0, 0, 0},
+{1, 1, 0, 0, 0},
+{1, 1, 0, 0, 0},
+{1, 1, 0, 0, 0},
+{1, 1, 0, 0, 0},
+{1, 1, 0, 0, 0},
+{1, 1, 1, 1, 1},
+{0, 1, 1, 1, 0}};
+
+int dMatrix[10][5] = 
+{{1, 1, 1, 0, 0},
+{1, 0, 0, 1, 0},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 0, 1},
+{1, 0, 0, 1, 0},
+{1, 1, 1, 0, 0}};*/
+
+
+
 uint16_t XYsafe( uint8_t x, uint8_t y)
 {
   if( x >= kMatrixWidth) return -1;
@@ -224,9 +287,9 @@ void loop()
     if(hour10 != 0) {
       showNum(hour10, LEFTSTARTX);
     }
-    showNum(hour, MIDLEFTSTARTX);
-    showNum(minute10, MIDRIGHTSTARTX);
-    showNum(minute, RIGHTSTARTX);
+    //showNum(hour, MIDLEFTSTARTX);
+    //showNum(minute10, MIDRIGHTSTARTX);
+    //showNum(minute, RIGHTSTARTX);
 
     
     if (seconds - (float)round(seconds) == 0) {
@@ -272,6 +335,9 @@ void setup() {
   //eight(RIGHTSTARTX,5);
 
   dots();
+
+  convertToText("aAAa", 30, 0);
+
 
   FastLED.show();
 }
@@ -437,6 +503,33 @@ void line(uint8_t x, uint8_t y, uint8_t size, bool horizontal) {
     } else {
       y++;
     }
+  } 
+}
+
+void convertToText(String message, uint8_t x, uint8_t y){
+  message.toUpperCase();
+  for(byte i=0; i<message.length(); i++){
+    switch(message.charAt(i)) {
+      case 'A':
+        matrix(x - ((i + 1) * 5), y, LETTERCOLOR, aMatrix);
+        break;
+      default:
+        break;
+    }
   }
-  
+}
+
+void lineD(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2) {
+ 
+}
+
+void matrix(uint8_t startX, uint8_t startY, CRGB color, bool matrix[10][5]) {
+ 
+  for (byte y = 0; y < 10; y++) {
+    for(byte x = 0; x < 5; x++) {
+      if (matrix[y][x] == true) {
+        leds[XY(startX + (4 - x), startY + y)] = color;
+      }
+    }
+  }
 }
